@@ -1,6 +1,7 @@
 import httpx
 from bs4 import BeautifulSoup
 from requests.manga_detail_request import MangaDetailRequest
+from requests.manga_read_request import MangaReadRequest
 from helpers.global_helper import extract_title, extract_thumbnail
 
 class MangaService:
@@ -43,3 +44,22 @@ class MangaService:
             "status": status.get_text(strip=True),
             "chapters": chapters
         }
+    
+
+    async def read_manga(self, request: MangaReadRequest):
+        url = str(request.url)
+
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.get(url, headers={"User-Agent": "MyScraperBot/1.0"})
+            response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, "lxml")
+        images = soup.select(request.image_selector)
+        data = []
+
+        for image in images:
+            img_src = image["src"]
+            if img_src:
+                data.append(img_src.strip())
+
+        return data

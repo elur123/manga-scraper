@@ -3,6 +3,7 @@ from requests.category_request import CategoryRequest
 from requests.popular_request import PopularRequest
 from requests.recent_request import RecentRequest
 from requests.manga_detail_request import MangaDetailRequest
+from requests.manga_read_request import MangaReadRequest
 
 from controllers.category_controller import CategoryController
 from controllers.popular_controller import PopularController
@@ -31,6 +32,11 @@ async def popular(request: PopularRequest):
 @app.post("/manga-details")
 async def manga_details(request: MangaDetailRequest):
     return await manga_controller.details(request)
+
+@app.post("/manga-read")
+async def manga_read(request: MangaReadRequest):
+    return await manga_controller.read(request)
+
 
 @app.get("/")
 async def root():

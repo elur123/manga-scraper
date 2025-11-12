@@ -48,3 +48,12 @@
     "status_selector": ".summary-content"
 }
 ```
+
+## /manga-read
+
+```json
+{
+    "url": "https://harimanga.me/manga/the-unfortunate-bride-is-abducted-by-the-charming-dragon-king/chapter-19/",
+    "image_selector": ".page-break img"
+}
+```
