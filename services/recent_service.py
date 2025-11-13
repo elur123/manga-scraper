@@ -29,7 +29,7 @@ class RecentService:
                 "url": title.get("url"),
                 "ratings": float(ratings.get("text")),
                 "thumbnail": thumbnail,
-                "chapters": chapters
+                "new_chapters": chapters
             })
 
         return results

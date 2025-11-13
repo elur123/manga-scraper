@@ -40,7 +40,7 @@
 
 ```json
 {
-    "url": "https://harimanga.me/manga/i-became-the-mother-of-the-supporting-male-leads-son/",
+    "url": "https://harimanga.me/manga/let-me-enjoy-the-extra-life/",
     "title_selector": ".post-title h1",
     "thumbnail_selector": ".summary_image img",
     "description_selector": ".summary__content",
@@ -53,7 +53,7 @@
 
 ```json
 {
-    "url": "https://harimanga.me/manga/the-unfortunate-bride-is-abducted-by-the-charming-dragon-king/chapter-19/",
+    "url": "https://harimanga.me/manga/let-me-enjoy-the-extra-life/chapter-45/",
     "image_selector": ".page-break img"
 }
 ```

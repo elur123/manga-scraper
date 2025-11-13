@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from requests.category_request import CategoryRequest
 from requests.popular_request import PopularRequest
 from requests.recent_request import RecentRequest
@@ -11,6 +13,14 @@ from controllers.recent_controller import RecentController
 from controllers.manga_controller import MangaController
 
 app = FastAPI(title="Simple Scraper API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # or ["http://localhost:5173"] for stricter security
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 category_controller = CategoryController()
 recent_controller = RecentController()
