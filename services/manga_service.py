@@ -86,14 +86,16 @@ class MangaService:
         }
     
     async def read_manga(self, request: MangaReadRequest):
-        url = str(request.url)
+        selector = get_selector(request.source)
+        selectors = selector._selector("read.json")
+        url = f"{selectors["based_url"]}/{request.manga}/{request.chapter}/"
 
         async with httpx.AsyncClient(timeout=15.0) as client:
             response = await client.get(url, headers={"User-Agent": "MyScraperBot/1.0"})
             response.raise_for_status()
 
         soup = BeautifulSoup(response.text, "lxml")
-        images = soup.select(request.image_selector)
+        images = soup.select(selectors["image_selector"])
         data = []
 
         for image in images:
