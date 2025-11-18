@@ -44,17 +44,19 @@ class MangaService:
         return data
 
     async def get_manga_details(self, request: MangaDetailRequest):
-        url = str(request.url)
+        selector = get_selector(request.source)
+        selectors = selector._selector("details.json")
+        url = f"{selectors["based_url"]}/{request.manga}/"
 
         async with httpx.AsyncClient(timeout=15.0) as client:
             response = await client.get(url, headers={"User-Agent": "MyScraperBot/1.0"})
             response.raise_for_status()
 
         soup = BeautifulSoup(response.text, "lxml")
-        title = soup.select_one(request.title_selector)
-        description = soup.select_one(request.description_selector)
-        thumbnail = extract_thumbnail(soup, request.thumbnail_selector)
-        status = soup.select_one(request.status_selector)
+        title = soup.select_one(selectors["title_selector"])
+        description = soup.select_one(selectors["description_selector"])
+        thumbnail = extract_thumbnail(soup, selectors["thumbnail_selector"])
+        status = soup.select_one(selectors["status_selector"])
 
         if description:
             paragraphs = description.find_all("p")
@@ -62,7 +64,7 @@ class MangaService:
         else:
             description_text = None
 
-        chapter_items = soup.select(request.chapters_selector)
+        chapter_items = soup.select(selectors["chapters_selector"])
         chapters = []
 
         for item in chapter_items:

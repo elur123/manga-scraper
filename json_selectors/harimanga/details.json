@@ -1,0 +1,8 @@
+{
+    "based_url": "https://harimanga.me/manga",
+    "title_selector": ".post-title h1",
+    "thumbnail_selector": ".summary_image img",
+    "description_selector": ".summary__content",
+    "chapters_selector": ".wp-manga-chapter a",
+    "status_selector": ".summary-content"
+}
