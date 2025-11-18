@@ -1,0 +1,5 @@
+{
+    "based_url": "https://harimanga.me",
+    "item_selector": ".menu-item-object-wp-manga-genre",
+    "title_selector": "a"
+}
