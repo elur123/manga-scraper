@@ -1,3 +1,5 @@
+from urllib.parse import urlparse, parse_qs, urlencode
+
 def extract_title(item, selector):
     tag = item.select_one(selector)
     if tag:
@@ -18,3 +20,18 @@ def extract_chapters(item, chapter_selector, link_selector):
                 "url": ch_link["href"]
             })
     return chapters
+
+def extract_url_scheme(base_url):
+    parsed = urlparse(base_url)
+
+    # Extract query parameters
+    query_params = parse_qs(parsed.query)
+
+    # Rebuild query string
+    query = urlencode(query_params, doseq=True)
+
+    return {
+        "scheme": parsed.scheme,
+        "netloc": parsed.netloc,
+        "query": query
+    }

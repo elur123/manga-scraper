@@ -2,11 +2,26 @@ from fastapi import HTTPException
 import httpx
 from requests.manga_detail_request import MangaDetailRequest
 from requests.manga_read_request import MangaReadRequest
+from requests.search_request import SearchRequest
 from services.manga_service import MangaService
 
 class MangaController:
     def __init__(self):
         self.manga_service = MangaService()
+
+    async def search(self, request: SearchRequest):
+        try:
+            data = await self.manga_service.search(request)
+            return {
+                "status": "success",
+                "data": data,
+                "status_code": 200
+            }
+
+        except httpx.RequestError as e:
+            raise HTTPException(status_code=400, detail=f"Request error: {str(e)}")
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
 
     async def details(self, request: MangaDetailRequest):
         try:

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from requests.search_request import SearchRequest
 from requests.category_request import CategoryRequest
 from requests.popular_request import PopularRequest
 from requests.recent_request import RecentRequest
@@ -26,6 +27,10 @@ category_controller = CategoryController()
 recent_controller = RecentController()
 popular_controller = PopularController()
 manga_controller = MangaController()
+
+@app.post("/search")
+async def search(request: SearchRequest):
+    return await manga_controller.search(request)
 
 @app.post("/categories")
 async def categories(request: CategoryRequest):

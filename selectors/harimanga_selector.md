@@ -1,3 +1,19 @@
+## /search
+
+```json
+{
+    "url": "https://harimanga.me/?s=killer&post_type=wp-manga",
+    "page": 1,
+    "item_selector": ".c-tabs-item__content",
+    "title_selector": ".post-title a",
+    "rating_selector": ".post-total-rating span",
+    "thumbnail_selector": ".c-image-hover img",
+    "status_selector": ".summary-content",
+    "latest_chapter": ".latest-chap .chapter a",
+    
+}
+```
+
 ## /categories
 
 ```json

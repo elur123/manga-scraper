@@ -2,9 +2,44 @@ import httpx
 from bs4 import BeautifulSoup
 from requests.manga_detail_request import MangaDetailRequest
 from requests.manga_read_request import MangaReadRequest
-from helpers.global_helper import extract_title, extract_thumbnail
+from requests.search_request import SearchRequest
+from helpers.global_helper import extract_title, extract_thumbnail, extract_url_scheme
 
 class MangaService:
+    async def search(self, request: SearchRequest):
+        url = str(request.url)
+
+        if(request.page > 1):
+            url_scheme = extract_url_scheme(url)
+            url = f"{url_scheme["scheme"]}://{url_scheme["netloc"]}/page/{request.page}/?{url_scheme["query"]}"
+
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.get(url, headers={"User-Agent": "MyScraperBot/1.0"})
+            response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, "lxml")
+        search_items = soup.select(request.item_selector)
+        data = []
+
+        for item in search_items:
+            title = extract_title(item, request.title_selector)
+            thumbnail = extract_thumbnail(item, request.thumbnail_selector)
+            status = item.select_one(request.status_selector)
+            latest_chapter = item.select_one(request.latest_chapter)
+
+            data.append({
+                "title": title.get("text"),
+                "url": title.get("url"),
+                "thumbnail": thumbnail,
+                "status": status.text.strip(),
+                "latest_chapter": {
+                    "text": latest_chapter.text.strip(),
+                    "link": latest_chapter['href']
+                }
+            })
+
+        return data
+
     async def get_manga_details(self, request: MangaDetailRequest):
         url = str(request.url)
 
@@ -45,7 +80,6 @@ class MangaService:
             "chapters": chapters
         }
     
-
     async def read_manga(self, request: MangaReadRequest):
         url = str(request.url)
 
