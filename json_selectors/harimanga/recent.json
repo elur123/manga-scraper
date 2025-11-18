@@ -1,0 +1,9 @@
+{
+    "based_url": "https://harimanga.me",
+    "item_selector": ".page-item-detail",
+    "title_selector": ".post-title a",
+    "rating_selector": ".post-total-rating span",
+    "thumbnail_selector": ".item-thumb img",
+    "chapter_selector": ".chapter-item",
+    "chapter_link_selector": "a.btn-link"
+}
