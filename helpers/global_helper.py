@@ -15,9 +15,15 @@ def extract_chapters(item, chapter_selector, link_selector):
     for ch in item.select(chapter_selector):
         ch_link = ch.select_one(link_selector)
         if ch_link:
+            based_url = ch_link["href"]
+            slug = extract_slug(based_url, 1)
+            chapter = extract_slug(based_url, -1)
+
             chapters.append({
                 "chapter": ch_link.text.strip(),
-                "url": ch_link["href"]
+                "url": based_url,
+                "slug": slug,
+                "chapter_slug": chapter
             })
     return chapters
 
@@ -30,8 +36,15 @@ def extract_url_scheme(base_url):
     # Rebuild query string
     query = urlencode(query_params, doseq=True)
 
+    print(parsed)
+
     return {
         "scheme": parsed.scheme,
         "netloc": parsed.netloc,
+        "path": parsed.path,
         "query": query
     }
+
+def extract_slug(base_url, index = -1):
+    scheme = extract_url_scheme(base_url)
+    return scheme["path"].strip("/").split("/")[index]

@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from requests.manga_detail_request import MangaDetailRequest
 from requests.manga_read_request import MangaReadRequest
 from requests.search_request import SearchRequest
-from helpers.global_helper import extract_title, extract_thumbnail, extract_url_scheme
+from helpers.global_helper import extract_title, extract_thumbnail, extract_url_scheme, extract_slug
 from helpers.selector_helper import get_selector
 class MangaService:
     async def search(self, request: SearchRequest):
@@ -26,18 +26,21 @@ class MangaService:
 
         for item in search_items:
             title = extract_title(item, selectors["title_selector"])
+            based_url = title.get("url")
             thumbnail = extract_thumbnail(item, selectors["thumbnail_selector"])
             status = item.select_one(selectors["status_selector"])
             latest_chapter = item.select_one(selectors["latest_chapter"])
 
             data.append({
                 "title": title.get("text"),
-                "url": title.get("url"),
+                "url": based_url,
+                "slug": extract_slug(based_url),
                 "thumbnail": thumbnail,
                 "status": status.text.strip(),
                 "latest_chapter": {
                     "text": latest_chapter.text.strip(),
-                    "link": latest_chapter['href']
+                    "link": latest_chapter['href'],
+                    "chapter": extract_slug(latest_chapter['href'])
                 }
             })
 
@@ -71,15 +74,18 @@ class MangaService:
             if item:
                 chapter_title = item.text.strip()
                 chapter_url = item["href"]
+                chapter_slug = extract_slug(chapter_url, -1)
                 if chapter_title:
                     chapters.append({
                         "title": chapter_title,
-                        "url": chapter_url
+                        "url": chapter_url,
+                        "slug": chapter_slug
                     })
 
         return {
             "thumbnail": thumbnail,
             "title": title.get_text(strip=True),
+            "slug": request.manga,
             "description": description_text,
             "status": status.get_text(strip=True),
             "chapters": chapters

@@ -1,7 +1,7 @@
 import httpx
 from bs4 import BeautifulSoup
 from requests.popular_request import PopularRequest
-from helpers.global_helper import extract_title, extract_thumbnail, extract_chapters
+from helpers.global_helper import extract_title, extract_thumbnail, extract_chapters, extract_slug
 from helpers.selector_helper import get_selector
 
 class PopularService:
@@ -22,10 +22,13 @@ class PopularService:
             title = extract_title(item, selectors["title_selector"])
             thumbnail = extract_thumbnail(item, selectors["thumbnail_selector"])
             chapters = extract_chapters(item, selectors["chapter_selector"], selectors["chapter_link_selector"])
+            manga_url = title.get("url")
+            slug = extract_slug(manga_url)
 
             results.append({
                 "title": title.get("text"),
-                "url": title.get("url"),
+                "url": manga_url,
+                "slug": slug,
                 "thumbnail": thumbnail,
                 "chapters": chapters
             })
