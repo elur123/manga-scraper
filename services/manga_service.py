@@ -4,12 +4,11 @@ from requests.manga_detail_request import MangaDetailRequest
 from requests.manga_read_request import MangaReadRequest
 from requests.search_request import SearchRequest
 from helpers.global_helper import extract_title, extract_thumbnail, extract_url_scheme
-from json_selectors.harimanga.index import HarimangaSelector
-
-harimanga_selectors = HarimangaSelector()
+from helpers.selector_helper import get_selector
 class MangaService:
     async def search(self, request: SearchRequest):
-        selectors = harimanga_selectors.search_selector()
+        selector = get_selector(request.source)
+        selectors = selector.search_selector()
         base_url = selectors["based_url"]
         url = f"{base_url}/?s={request.search}&post_type=wp-manga"
 
