@@ -44,6 +44,10 @@ async def recent(request: RecentRequest):
 async def popular(request: PopularRequest):
     return await popular_controller.list(request)
 
+@app.post("/new")
+async def popular(request: PopularRequest):
+    return await popular_controller.new(request)
+
 @app.post("/manga-details")
 async def manga_details(request: MangaDetailRequest):
     return await manga_controller.details(request)

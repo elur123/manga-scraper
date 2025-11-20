@@ -36,8 +36,6 @@ def extract_url_scheme(base_url):
     # Rebuild query string
     query = urlencode(query_params, doseq=True)
 
-    print(parsed)
-
     return {
         "scheme": parsed.scheme,
         "netloc": parsed.netloc,

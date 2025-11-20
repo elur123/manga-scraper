@@ -21,3 +21,18 @@ class PopularController:
             raise HTTPException(status_code=400, detail=f"Request error: {str(e)}")
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
+        
+    async def new(self, request: PopularRequest):
+        try:
+            data = await self.popular_service.get_new_items(request)
+
+            return {
+                "status": "success",
+                "data": data,
+                "status_code": 200
+            }
+
+        except httpx.RequestError as e:
+            raise HTTPException(status_code=400, detail=f"Request error: {str(e)}")
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
