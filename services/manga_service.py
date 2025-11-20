@@ -59,6 +59,7 @@ class MangaService:
         title = soup.select_one(selectors["title_selector"])
         description = soup.select_one(selectors["description_selector"])
         thumbnail = extract_thumbnail(soup, selectors["thumbnail_selector"])
+        ratings = soup.select_one(selectors["ratings_selector"])
         status = soup.select_one(selectors["status_selector"])
 
         if description:
@@ -87,6 +88,7 @@ class MangaService:
             "title": title.get_text(strip=True),
             "slug": request.manga,
             "description": description_text,
+            "ratings": ratings.get_text(strip=True),
             "status": status.get_text(strip=True),
             "chapters": chapters
         }

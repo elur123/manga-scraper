@@ -4,5 +4,6 @@
     "thumbnail_selector": ".summary_image img",
     "description_selector": ".summary__content",
     "chapters_selector": ".wp-manga-chapter a",
-    "status_selector": ".summary-content"
+    "ratings_selector": ".post-rating .total_votes",
+    "status_selector": ".post-status .summary-content"
 }
