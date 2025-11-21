@@ -30,7 +30,7 @@ class PopularService:
                 "url": manga_url,
                 "slug": slug,
                 "thumbnail": thumbnail,
-                "chapters": chapters
+                "new_chapters": chapters
             })
 
         return results
@@ -61,7 +61,7 @@ class PopularService:
                 "url": manga_url,
                 "slug": slug,
                 "thumbnail": thumbnail,
-                "chapters": chapters
+                "new_chapters": chapters
             })
 
         return results

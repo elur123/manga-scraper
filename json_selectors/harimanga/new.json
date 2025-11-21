@@ -4,5 +4,5 @@
     "title_selector": ".post-title a",
     "thumbnail_selector": ".slider__thumb img",
     "chapter_selector": ".chapter-item",
-    "chapter_link_selector": "a"
+    "chapter_link_selector": ".chapter a"
 }

@@ -12,19 +12,21 @@ def extract_thumbnail(item, selector):
 
 def extract_chapters(item, chapter_selector, link_selector):
     chapters = []
-    for ch in item.select(chapter_selector):
-        ch_link = ch.select_one(link_selector)
-        if ch_link:
-            based_url = ch_link["href"]
-            slug = extract_slug(based_url, 1)
-            chapter = extract_slug(based_url, -1)
+    # Select ALL chapter links inside chapter-item
+    chapter_links = item.select(f"{chapter_selector} {link_selector}")
 
-            chapters.append({
-                "chapter": ch_link.text.strip(),
-                "url": based_url,
-                "slug": slug,
-                "chapter_slug": chapter
-            })
+    for ch_link in chapter_links:
+        based_url = ch_link["href"]
+        slug = extract_slug(based_url, 1)
+        chapter = extract_slug(based_url, -1)
+
+        chapters.append({
+            "chapter": ch_link.text.strip(),
+            "url": based_url,
+            "slug": slug,
+            "chapter_slug": chapter
+        })
+
     return chapters
 
 def extract_url_scheme(base_url):
